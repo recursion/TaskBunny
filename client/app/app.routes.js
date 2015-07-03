@@ -1,40 +1,46 @@
 (function(){
 
   angular.module('trApp')
-    .config(function($routeProvider) {
+    .config(function($stateProvider, $urlRouterProvider) {
 
-      $routeProvider
-        .when('/', {
-            templateUrl: 'app/components/landing/landing.html',
-            controller: 'LandingPageController',
-            publicAccess: true
+      $urlRouterProvider.otherwise('/');
+
+      $stateProvider
+        .state('landing', {
+          url: '/',
+          templateUrl: 'app/components/landing/landing.html',
+          controller: 'LandingPageController'
         })
-        .when('/sign-in', {
-            templateUrl: 'app/components/sign-in/sign-in.html',
-            controller: 'SignInPageController',
-            publicAccess: true
+        .state('sign-in', {
+          url: '/sign-in',
+          templateUrl: 'app/components/sign-in/sign-in.html',
+          controller: 'SignInPageController'
         })
-        .when('/create-task', {
-            templateUrl: 'app/components/taskNew/task-form.html',
-            controller: 'TaskFormController'
+        .state('create', {
+          url: '/create-task',
+          templateUrl: 'app/components/taskNew/task-form.html',
+          controller: 'TaskFormController'
         })
-        .when('/tasks', {
-            templateUrl: 'app/components/myTasks/tasks.html',
-            controller: 'TasksController'
+        .state('tasks', {
+          url: '/tasks',
+          templateUrl: 'app/components/myTasks/tasks.html',
+          controller: 'TasksController'
         })
-        .when('/task/:id', {
-            templateUrl: 'app/components/taskDetails/task-view.html',
-            controller: 'TaskViewController'
+        .state('view', {
+          url: '/task/:id',
+          templateUrl: 'app/components/taskDetails/task-view.html',
+          controller: 'TaskViewController'
         })
-        .when('/search', {
-            templateUrl: 'app/components/taskSearch/taskSearch.html',
-            controller: 'TaskSearchController'
+        .state('search', {
+          url: '/search',
+          templateUrl: 'app/components/taskSearch/taskSearch.html',
+          controller: 'TaskSearchController'
         })
-        .when('/settings', {
-            templateUrl: 'app/components/userSettings/template.html',
-            controller: 'SettingsController'
-        })
-        .otherwise({redirectTo: '/'});
+        .state('settings', {
+          url: '/settings',
+          templateUrl: 'app/components/userSettings/template.html',
+          controller: 'SettingsController'
+        });
 
     });
 
