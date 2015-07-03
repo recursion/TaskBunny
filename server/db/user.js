@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+// TODO: Add validation at the schema level
 var UserSchema = new mongoose.Schema({
   googleId: { type: String, index: { unique: true } },
   name: String,
