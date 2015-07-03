@@ -4,13 +4,13 @@
 
 ## Team
 
-  - __Product Owner__: Bryan
-  - __Scrum Master__: Mokhtar
-  - __Development Team Members__: David, Bryan, Mokhtar
+  - __Product Owner__: Billy Ruhk 
+  - __Scrum Master__: Sean Grogg 
+  - __Development Team Members__: Michael Symmes, Sean Grogg, Billy Ruhk
 
 ## Demo
 
-> http://taskbunny.azurewebsites.net
+https://radiant-sierra-9253.heroku.com/
 
 ## Table of Contents
 
