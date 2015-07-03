@@ -1,4 +1,6 @@
 # Task Bunny
+#### Now with fangs
+##### Forked from [ChainAndSugar](https://github.com/chainsugar/chainsugar)
 
 > TaskBunny is a web application that connects people who have tasks to be done, with people willing to help them get them done.
 
