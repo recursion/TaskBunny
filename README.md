@@ -25,7 +25,7 @@
 
 - Node 0.10.x
 - Mongod
-- SendGrid (for email notifications)
+- ~~SendGrid (for email notifications)~~ Disabled in this build.
 
 ## Development
 
@@ -96,7 +96,10 @@ It should look something like this:
 
 When running the server in production make sure to set NODE_ENV environment variable to 'production'.
 
-Your deployment script should run `grunt build` task. For Azure deployments this is handled by `deploy.sh` included in the project.
+Your deployment script should run `grunt build` task.
+For Azure deployments this is handled by `deploy.sh` included in the project.
+
+For heroku this is handled by the postinstall and start scripts.
 
 
 In production set the values of the following environment variables accordingly
