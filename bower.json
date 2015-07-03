@@ -1,7 +1,7 @@
 {
-  "name": "chainsugar",
-  "version": "0.0.0",
-  "homepage": "https://github.com/chainsugar/chainsugar",
+  "name": "TaskBunny",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ArmorAndMint/TaskBunny",
   "ignore": [
     "**/.*",
     "node_modules",
