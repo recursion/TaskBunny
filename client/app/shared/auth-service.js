@@ -6,7 +6,10 @@
   function AuthService($http){
 
     var profile = {};
-
+ 
+    // this is what gets called every route change
+    // it calls the server and asks if we are in an authenticated session
+    //
     profile.check = function(){
       return $http({
         method: 'GET',
