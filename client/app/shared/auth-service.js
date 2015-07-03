@@ -6,7 +6,8 @@
   function AuthService($http){
 
     var profile = {};
-
+ 
+    // this calls the server and asks if we are in an authenticated session
     profile.check = function(){
       return $http({
         method: 'GET',
