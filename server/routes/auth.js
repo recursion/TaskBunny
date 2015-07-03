@@ -90,7 +90,11 @@ module.exports = function(app) {
   //api to check on client side if session is authenticated
   app.get('/auth/profile/check', function(req, res, next){
     if(req.isAuthenticated()){
-      res.status(200).send(req.user);
+      // original response sent a user object(req.user)to the client
+      // that was not being used (as far as i can tell) 
+      // but that was also carrying the full payload of user data
+      // which is not really great.....
+      res.status(200).send();
     } else {
       res.status(401).end();
     }
