@@ -9,13 +9,6 @@ angular.module('trApp', ['ngRoute'])
         return;
       }
 
-      // crazy talk to call this on every client route change
-//      if (next.$$route && !next.$$route.publicAccess){
-//        AuthService.check().catch(function(){
-//          $location.path('/sign-in');
-//        });
-//      }
-
     });
   })
   // instead of asking the server if we are authed on every single route change, 
