@@ -12,7 +12,7 @@
 
 ## Demo
 
-https://radiant-sierra-9253.heroku.com/
+http://nowwithfangs.herokuapp.com/
 
 ## Table of Contents
 
