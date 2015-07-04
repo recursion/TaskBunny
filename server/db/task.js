@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+
+
 var TaskSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   // user._id of creator of task
@@ -20,9 +22,27 @@ var TaskSchema = new mongoose.Schema({
   // }]
 
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  // user._id of user selected by owner to perform task
-  complete: Boolean     
-  // set to true by owner when task is complete
+
+  // track task progress 
+  // for now lets say states can be a number 0 - 5
+  // 0 - dispute (by task owner)
+  // 1 - open (set at creation)
+  // 2 - pending (set at assignment)
+  // 3 - task complete  (set by task doer)
+  // 4 - completion confirmed (by task owner)
+  state: {
+    type: Number,
+    default: 1,
+    min: 0,
+    max: 4,
+  },
+
 });
+
+// this is called from the controller when the state is allowed to 
+// progress to the next level
+TaskSchema.methods.progress = function() {
+  this.state++;
+};
 
 module.exports = mongoose.model('Task', TaskSchema);

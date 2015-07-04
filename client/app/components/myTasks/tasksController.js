@@ -4,6 +4,8 @@ angular.module('trApp')
     .controller('TasksController', ['$scope', '$location', 'TaskService', TasksController]);
 
   function TasksController($scope, $location, TaskService){
+    $scope.states = TaskService.states;
+
     // make calls to TaskFormService to retrieve all tasks
 
     TaskService.retrieveUserTasks().success(function(tasks){
@@ -30,6 +32,6 @@ angular.module('trApp')
       $location.path('/task/' + id);
     }
 
-  };
+  }
 
 })();

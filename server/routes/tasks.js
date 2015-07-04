@@ -38,6 +38,7 @@ module.exports = function(app, express) {
       // .populate('owner assignedTo applicants')
       .exec(function(err, tasks){
         if(err) {
+          console.error(err);
           res.status(500).end();
         } else {
           res.status(200).send(tasks);
@@ -95,6 +96,7 @@ module.exports = function(app, express) {
       assignedTo: null
     }, function(err, task){
       if(err) {
+        console.log(err);
         res.status(500).end();
       } else {
         res.status(201).send(task);
@@ -218,13 +220,16 @@ module.exports = function(app, express) {
           return res.status(500).end();
         }
         if(task){
+          task.progress();
           task.assignedTo = new strToMongooseObjectId(userId);
           task.save(function(){
             res.status(201).end();
             //notify applicant that they have been assigned the task
-            notify.taskAssigned(taskId);
+            //no dont!
+            //notify.taskAssigned(taskId);
           });
         } else {
+          console.error('Something didnt work - there was no error or task');
           res.status(403).end();
         }
       });
@@ -266,7 +271,32 @@ module.exports = function(app, express) {
       });
   });
 
+  // verify that this user is the assignee of this task
+  // and then update the state
+  // TODO: state updating should be its own machine?
   app.get('/api/task/complete/:id', isAuthenticated, function(req, res){
+    var taskId = req.params.id;
+
+    db.Task.findById(taskId)
+      .where({
+        assignedTo: {$eq: req.user._id}
+      })
+      .exec(function(err, task){
+        if(err){
+          return res.status(500).end();
+        }
+        if(task){
+          task.progress();
+          task.save(function(){
+            res.status(200).end();
+          });
+        } else {
+          res.status(403).end();
+        }
+      });
+  });
+
+  app.get('/api/task/confirm/:id', isAuthenticated, function(req, res){
     var taskId = req.params.id;
 
     db.Task.findById(taskId)
@@ -278,7 +308,7 @@ module.exports = function(app, express) {
           return res.status(500).end();
         }
         if(task){
-          task.complete = true;
+          task.progress();
           task.save(function(){
             res.status(200).end();
           });
@@ -287,8 +317,7 @@ module.exports = function(app, express) {
         }
       });
   });
-}
-
+};
 function isAuthenticated(req, res, next){
   if(req.isAuthenticated()) {
     next();

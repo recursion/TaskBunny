@@ -26,6 +26,12 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
+app.get('/api/whoami', function(req, res){
+  if (req.user) {
+    res.json({id: req.user._id});
+  }
+});
+
 app.listen(process.env.PORT || 8000);
 
 console.log('server listening...');

@@ -24,7 +24,7 @@
         <td> {{ task.applicants.length }} </td>
         <td> {{ task.assignedTo.name }} </td>
         <td> me </td>
-        <td> {{ task.complete ? "Completed" : "Pending"}} </td>
+        <td> {{ states[task.state] }} </td>
       </tr>
     </tbody>
   <table>
@@ -51,7 +51,7 @@
         <td> {{ task.applicants.length }} </td>
         <td> me </td>
         <td> {{ task.owner.name }} </td>
-        <td> {{ task.complete ? "Completed" : "Pending"}} </td>
+        <td> {{ states[task.state] }} </td>
       </tr>
     </tbody>
   </table>
@@ -78,7 +78,7 @@
         <td> {{ task.applicants.length}} </td>
         <td> {{ task.assignedTo.name }} </td>
         <td> {{ task.owner.name }} </td>
-        <td> {{ task.complete ? "Completed" : "Pending"}} </td>
+        <td> {{ states[task.state] }} </td>
       </tr>
     </tbody>
   </table>
