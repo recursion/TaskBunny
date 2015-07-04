@@ -37,7 +37,7 @@
         })
 
         .state('tasks.view', {
-          url: '/task/:id',
+          url: '/:id',
           templateUrl: 'app/components/taskDetails/task-view.html',
           controller: 'TaskViewController'
         })
