@@ -30,8 +30,8 @@
           controller: 'TasksController'
         })
         //this is the sub-state of the main tasks view
-        .state('tasks.view', {
-          url: '/view',
+        .state('tasks.manage', {
+          url: '/manage',
           templateUrl: 'app/components/myTasks/tasks.html',
           controller: 'TasksController'
         })
@@ -51,7 +51,6 @@
           templateUrl: 'app/components/userSettings/template.html',
           controller: 'SettingsController'
         });
-
     });
 
 })();
