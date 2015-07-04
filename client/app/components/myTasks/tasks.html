@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       <tr class="task" ng-repeat="task in createdTasks | orderBy:'task.deadline'">
-        <td ng-click="viewTask(task._id)"> {{ task.information.name }} </td>
+        <td ui-sref="tasks.view({id: task._id})"> {{ task.information.name }} </td>
         <td> {{ task.information.deadline }} </td>
         <td> {{ task.information.city }} </td>
         <td> {{ '$' + task.information.cost }} </td>
