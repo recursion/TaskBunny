@@ -1,0 +1,24 @@
+.cards {
+  margin: 0 auto;
+  width: 40%;
+  margin-left: 5em;
+  display: inline-block;
+}
+aside {
+  margin: 0 auto;
+  width: 20%;
+  vertical-align: top;
+  display: inline-block;
+}
+aside.filters>a {
+  display: block;
+}
+.card {
+  display: inline-block;
+  width: 80%;
+  border: 3px solid black;
+  border-radius: 15px;
+  padding: 2em;
+  background-color: grey;
+  color: white;
+}
