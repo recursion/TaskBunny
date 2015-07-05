@@ -1,0 +1,39 @@
+.cards {
+  margin: 0 auto;
+  width: 40%;
+  margin-left: 5em;
+  display: inline-block;
+}
+aside {
+  margin: 0 auto;
+  width: 20%;
+  vertical-align: top;
+  display: inline-block;
+}
+aside.filters>a {
+  display: block;
+  color: #df691a;
+}
+.card {
+  display: inline-block;
+  width: 80%;
+  margin: 5px auto;
+  padding: 1em;
+  border: 3px solid #df691a;
+  border-radius: 15px;
+  background-color: grey;
+  color: white;
+}
+.card > h5 {
+  margin: 0 auto;
+  font-size: 1em;
+  text-align: center;
+}
+.card > h6 {
+  margin: 0 auto;
+  font-size: .75em;
+  text-align: center;
+}
+.card > ul {
+  padding: 10px;
+}

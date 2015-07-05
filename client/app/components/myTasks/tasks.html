@@ -1,5 +1,61 @@
 <div ng-include="'app/shared/navbar/navbar.html'"> </div>
 
+<section class="cards">
+  <div class="task card" ng-repeat="task in currentTaskList | orderBy:'task.deadline'">
+    <h5>{{ task.information.name }}</h5>
+    <h6>Status: <em>{{ states[task.state] }}</em> </h6>
+      <ul>
+         <li>Owner: {{ task.owner.name }}</li>
+         <li>City: {{ task.information.city }}</li>
+         <li>Due: {{ deadlineStr }}</li>
+         <li>Description: {{ task.information.description }}</li>
+         <li>Fees: {{ task.information.cost }}</li>
+         <img id="displayImage" ng-show="task.information.image" ng-src="{{ task.information.image }}" />
+      </ul>
+
+      <button ng-show="task.isOwner && !task.assignedTo && task.applicants.length==0"
+        ng-click="editTask(task._id)" class="btn btn-default">Edit</button>
+
+      <button ng-show="!task.isOwner && !task.assignedTo &&!task.appliedTo"
+        ng-click="applyForTask(task._id)" class="btn btn-default">Apply</button>
+
+      <div ng-show="task.assignedTo">
+        <!-- assigned person -->
+        <div>Assigned to: {{ task.assignedTo.name }}</div>
+        <!-- show this only if its a task assiged to this user -->
+        <button ng-show="task.state === 2 && me.id === task.assignedTo._id"
+          ng-click="setProgress(task._id, 'complete')" class="btn btn-default">Set Complete</button>
+
+        <!-- show this when the task is set complete by the task doer
+          and the task giver needs to confirm its completion -->
+        <button ng-show="task.isOwner && task.state === 3"
+          ng-click="setProgress(task._id, 'confirm')"
+          class="btn btn-default">Confirm Completed</button>
+      </div>
+      <hr>
+      <div ng-show="!task.assignedTo">
+        <!-- list of applicants -->
+        <div>List of applicants</div>
+        <ul>
+          <li ng-repeat="user in task.applicants">{{ user.name }}
+            <button ng-show="task.isOwner"
+             ng-click="assignToUser(task._id, user._id)"
+             class="btn btn-default">Assign</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<aside class="filters">
+  <h5>My Tasks</h5>
+  <a ng-click="setTaskList('created')">Created</a>
+  <a ng-click="setTaskList('applied')">Applied</a>
+  <a ng-click="setTaskList('assigned')">Assigned</a>
+  <a ng-click="">Completed</a>
+  <a ng-click="">Confirmed</a>
+</aside>
+<!--
 <div class="table-responsive animated fadeInLeft">
   <table class="table table-striped table-bordered table-condensed table-hover">
     <thead>
@@ -82,4 +138,5 @@
       </tr>
     </tbody>
   </table>
+-->
 </div>
