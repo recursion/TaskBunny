@@ -2,10 +2,10 @@
 
 <section class="cards">
   <div class="task card" ng-repeat="task in currentTaskList | orderBy:'task.deadline'">
-    <div>Task Status: <em>{{ states[task.state] }}</em> </div>
+    <h5>{{ task.information.name }}</h5>
+    <h6>Status: <em>{{ states[task.state] }}</em> </h6>
       <ul>
          <li>Owner: {{ task.owner.name }}</li>
-         <li>Task: {{ task.information.name }}</li>
          <li>City: {{ task.information.city }}</li>
          <li>Due: {{ deadlineStr }}</li>
          <li>Description: {{ task.information.description }}</li>
@@ -21,7 +21,7 @@
 
       <div ng-show="task.assignedTo">
         <!-- assigned person -->
-        <div>Task is assigned to: {{ task.assignedTo.name }}</div>
+        <div>Assigned to: {{ task.assignedTo.name }}</div>
         <!-- show this only if its a task assiged to this user -->
         <button ng-show="task.state === 2 && me.id === task.assignedTo._id"
           ng-click="setProgress(task._id, 'complete')" class="btn btn-default">Set Complete</button>

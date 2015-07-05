@@ -1,48 +1,36 @@
 (function(){
 
 angular.module('trApp')
-    .controller('TasksController', ['$scope', '$route', '$location', 'TaskService', 'UserService', TasksController]);
+    .controller('TasksController', ['$interval', '$scope', '$route', '$location', 'TaskService', 'UserService', TasksController]);
 
-  function TasksController($scope, $route, $location, TaskService, UserService){
+  function TasksController($interval, $scope, $route, $location, TaskService, UserService){
     $scope.states = TaskService.states;
     
-    // make calls to TaskFormService to retrieve all tasks
+    console.log('Couldnt be');
 
-    TaskService.retrieveUserTasks().success(function(tasks){
-      tasks = _.map(tasks, function(task){
-        task.information.deadline = moment(Date(task.information.deadline)).format('MMMM Do YYYY');
-        return task;
-      });
-
-      $scope.createdTasks = _.filter(tasks, function(task){
-        return task.isOwner;
-      });
-
-      $scope.appliedTasks = _.filter(tasks, function(task){
-        return (task.appliedTo && !task.isAssignedToMe);
-      });
-
-      $scope.assignedTasks = _.filter(tasks, function(task){
-        return task.isAssignedToMe;
-      });
-
-      // set our starting state
-      $scope.currentTaskList = $scope.createdTasks;
-
-    });
+    // init currentTaskList and currenTaskListName
+    $scope.currentTaskListName = 'created';
+    $scope.currentTaskList = $scope[$scope.currentTaskListName];
 
     $scope.viewTask = function(id) {
       $location.path('/task/' + id);
     };
     
+    // this function sets which task filter to use
+    // takes a string that describes which filter to use
+    // applied, created, assigned are possible options
     $scope.setTaskList = function(list){
-      console.log('HI!');
       if (list === 'applied'){
         $scope.currentTaskList = $scope.appliedTasks;
+        $scope.currentTaskListName = list;
       } else if (list === 'created'){
         $scope.currentTaskList = $scope.createdTasks;
+        $scope.currentTaskListName = list;
       } else if (list === 'assigned') {
         $scope.currentTaskList = $scope.assignedTasks;
+        $scope.currentTaskListName = list;
+      } else {
+        console.error('Invalid task list name: ', list);
       }
     };
 
@@ -51,6 +39,7 @@ angular.module('trApp')
       .then(function(results){
         $scope.me = results.data;
       });
+
 
     $scope.editMode = false;
     $scope.editTask = function(){
@@ -89,7 +78,7 @@ angular.module('trApp')
     $scope.deleteTask = function(id) {
       $scope.editMode = false;
       TaskService.deleteTask(id).success(function(){
-        $location.path("/tasks");
+        $route.reload();
       });
       //todo handle error
     };
@@ -115,11 +104,60 @@ angular.module('trApp')
     // it may make sense to just create a 'state'
     // or 'progress' variable to tracke this?
     $scope.setProgress = function(id, state){
-      console.log('Sending off task state change');
       TaskService.setProgress(id, state)
         .success(function(d){
-          console.log('Success! :', d);
+          $route.reload();
         });
     };
-  } 
+
+    $scope.updateTaskList = function(){
+      TaskService.retrieveUserTasks()
+        .success(function(tasks){
+          tasks = _.map(tasks, function(task){
+            task.information.deadline = moment(Date(task.information.deadline)).format('MMMM Do YYYY');
+            return task;
+          });
+
+          $scope.createdTasks = _.filter(tasks, function(task){
+            return task.isOwner;
+          });
+
+          $scope.appliedTasks = _.filter(tasks, function(task){
+            return (task.appliedTo && !task.isAssignedToMe);
+          });
+
+          $scope.assignedTasks = _.filter(tasks, function(task){
+            return task.isAssignedToMe;
+          });
+
+          // set our current task list if we havnt yet
+          if (!$scope.currentTaskList){
+            // set our starting state
+            $scope.currentTaskList = $scope.createdTasks;
+          } else {
+            // update the current task list
+            // need a more elegant way to do this:
+            // like an object map or something
+            if ($scope.currentTaskListName === 'created'){
+              $scope.currentTaskList = $scope.createdTasks;
+            } else if ($scope.currentTaskListName === 'applied'){
+              $scope.currentTaskList = $scope.appliedTasks;
+            } else if ($scope.currentTaskListName === 'assigned'){
+              $scope.currentTaskList = $scope.assignedTasks;
+            } else {
+              console.error('No task to apply');
+            }
+          }
+
+      });
+    };
+
+    // call updateTaskList once on view load
+    // and again every 1.5 seconds to update tasks
+    $scope.updateTaskList();
+    $interval(function(){
+      $scope.updateTaskList();
+    }, 1500);
+      
+  }// end of controller function body
 })();
