@@ -2,7 +2,7 @@
 
 <div class="container">
   <div ng-show="!editMode">
-    <div>Task Status: <em>{{ task.complete ? "Completed" : "Pending"}}</em> </div>
+    <div>Task Status: <em>{{ states[task.state] }}</em> </div>
     <ul>
      <li>Owner: {{ task.owner.name }}</li>
      <li>Task: {{ task.information.name }}</li>
@@ -19,7 +19,12 @@
     <div ng-show="task.assignedTo">
       <!-- assigned person -->
       <div>Task is assigned to: {{ task.assignedTo.name }}</div>
-      <button ng-show="task.isOwner && !task.complete" ng-click="taskComplete()" class="btn btn-default">Set Complete</button>
+      <!-- show this only if its a task assiged to this user -->
+      <button ng-show="task.state === 2 && me.id === task.assignedTo._id" ng-click="setProgress('complete')" class="btn btn-default">Set Complete</button>
+
+      <!-- show this when the task is set complete by the task doer
+        and the task giver needs to confirm its completion -->
+      <button ng-show="task.isOwner && task.state === 3" ng-click="setProgress('confirm')" class="btn btn-default">Confirm Completed</button>
     </div>
     <hr>
     <div ng-show="!task.assignedTo">

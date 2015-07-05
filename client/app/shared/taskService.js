@@ -6,6 +6,10 @@
 
   function TaskService($http){
     return {
+      // these represent the states a task can be in 
+      // state itself will only be stored on a number
+      // lowercase keys with properly capitilized values
+      states: ['Dispute', 'Open', 'Pending', 'Ready', 'Complete'],
 
       addTask: function(form) {
         return $http({
@@ -56,6 +60,25 @@
         });
       },
 
+      // set task state 
+      // takes a task id and a string state value
+      // state should only be settable to:
+      // 'complete', 'confirmed', 'disputed' or....?
+      // (state is open at creation - pending once assigned)
+      setProgress: function(taskId, state) {
+        console.log('In set p', state, taskId);
+        return $http({
+          method: 'GET',
+          url: '/api/task/'+state+'/'+taskId
+        }).success(function(results){
+          console.log(results.data);
+          return results.data;
+        }).error(function(err){
+          console.log(err);
+          return err;
+        });
+      },
+
       updateTask: function(taskId, information) {
       // changing description of a task
         return $http({
@@ -95,13 +118,6 @@
           data: {
             task: taskId
           }
-        });
-      },
-
-      setTaskComplete: function(taskId) {
-        return $http({
-          method: 'GET',
-          url: '/api/task/complete/'+taskId
         });
       }
 

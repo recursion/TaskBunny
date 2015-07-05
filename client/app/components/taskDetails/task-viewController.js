@@ -1,12 +1,22 @@
 (function(){
 
 angular.module('trApp')
-    .controller('TaskViewController', ['$scope', '$location', '$routeParams', 'TaskService', TaskViewController]);
+    .controller('TaskViewController', ['$scope', '$location', '$routeParams', 'TaskService', 'UserService', TaskViewController]);
 
-  function TaskViewController($scope, $location, $routeParams, TaskService){
+  function TaskViewController($scope, $location, $routeParams, TaskService, UserService){
 
     // get task _id from $rootParams
     var _id = $routeParams.id;
+
+    // get the states array from our task service
+    // this is used for translating state (which is a number) to a string
+    $scope.states = TaskService.states;
+
+    // set the id for this user
+    UserService.whoami()
+      .then(function(results){
+        $scope.me = results.data;
+      });
 
     $scope.editMode = false;
 
@@ -31,7 +41,7 @@ angular.module('trApp')
         $scope.deadlineStr = moment($scope.deadline).format('MMMM Do YYYY');
       });
     };
-
+    
     $scope.updateTask = function() {
       $scope.editMode = false;
       $scope.task.information.deadline = $scope.deadline;
@@ -64,17 +74,23 @@ angular.module('trApp')
       TaskService.assignTask(_id, userId).success(function(){
         reload();
       }).catch(function(err){
-
+        console.log(err);
       });
     };
 
-    $scope.taskComplete = function(){
-      TaskService.setTaskComplete(_id).success(function(){
-        $location.path("/tasks");
-      });
+    // set a 'ready' state
+    // it may make sense to just create a 'state'
+    // or 'progress' variable to tracke this?
+    $scope.setProgress = function(state){
+      console.log('Sending off task state change');
+      TaskService.setProgress(_id, state)
+        .success(function(d){
+          console.log('Success! :', d);
+          $location.path("/tasks");
+        });
     };
-
+    
     reload(_id);
-  };
+  }
 
 })();
