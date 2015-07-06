@@ -24,6 +24,12 @@ angular.module('trApp')
       } else if (list === 'created'){
         $scope.currentTaskList = $scope.createdTasks;
         $scope.currentTaskListName = list;
+      } else if (list === 'open'){
+        $scope.currentTaskList = $scope.openTasks;
+        $scope.currentTaskListName = list;
+      } else if (list === 'pending'){
+        $scope.currentTaskList = $scope.pendingTasks;
+        $scope.currentTaskListName = list;
       } else if (list === 'assigned') {
         $scope.currentTaskList = $scope.assignedTasks;
         $scope.currentTaskListName = list;
@@ -132,6 +138,14 @@ angular.module('trApp')
             return task.isOwner;
           });
 
+          $scope.openTasks = _.filter(tasks, function(task){
+            return task.isOwner && task.state === 1;
+          });
+
+          $scope.pendingTasks = _.filter(tasks, function(task){
+            return task.isOwner && task.state === 2;
+          });
+
           $scope.appliedTasks = _.filter(tasks, function(task){
             return (task.appliedTo && !task.isAssignedToMe);
           });
@@ -170,6 +184,10 @@ angular.module('trApp')
               // like an object map or something
             if ($scope.currentTaskListName === 'created'){
               $scope.currentTaskList = $scope.createdTasks;
+            } else if ($scope.currentTaskListName === 'open'){
+              $scope.currentTaskList = $scope.openTasks;
+            } else if ($scope.currentTaskListName === 'pending'){
+              $scope.currentTaskList = $scope.pendingTasks;
             } else if ($scope.currentTaskListName === 'applied'){
               $scope.currentTaskList = $scope.appliedTasks;
             } else if ($scope.currentTaskListName === 'assigned'){
@@ -188,10 +206,6 @@ angular.module('trApp')
           }
 
       });
-    };
-
-    $scope.sendTo = function(location){
-      $location.path(location);
     };
 
     // call updateTaskList once on view load
