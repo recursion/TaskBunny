@@ -152,6 +152,10 @@ angular.module('trApp')
       });
     };
 
+    $scope.sendTo = function(location){
+      $location.path(location);
+    };
+
     // call updateTaskList once on view load
     // and again every 1.5 seconds to update tasks
     $scope.updateTaskList();
