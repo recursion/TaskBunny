@@ -6,8 +6,6 @@ angular.module('trApp')
   function TasksController($interval, $scope, $route, $location, TaskService, UserService){
     $scope.states = TaskService.states;
     
-    console.log('Couldnt be');
-
     // init currentTaskList and currenTaskListName
     $scope.currentTaskListName = 'created';
     $scope.currentTaskList = $scope[$scope.currentTaskListName];
@@ -28,6 +26,18 @@ angular.module('trApp')
         $scope.currentTaskListName = list;
       } else if (list === 'assigned') {
         $scope.currentTaskList = $scope.assignedTasks;
+        $scope.currentTaskListName = list;
+      } else if (list === 'ready') {
+        $scope.currentTaskList = $scope.readyTasks;
+        $scope.currentTaskListName = list;
+      } else if (list === 'myReady') {
+        $scope.currentTaskList = $scope.myReadyTasks;
+        $scope.currentTaskListName = list;
+      } else if (list === 'myCompleted') {
+        $scope.currentTaskList = $scope.myCompletedTasks;
+        $scope.currentTaskListName = list;
+      } else if (list === 'iCompleted') {
+        $scope.currentTaskList = $scope.iCompletedTasks;
         $scope.currentTaskListName = list;
       } else {
         console.error('Invalid task list name: ', list);
@@ -127,7 +137,27 @@ angular.module('trApp')
           });
 
           $scope.assignedTasks = _.filter(tasks, function(task){
-            return task.isAssignedToMe;
+            return task.isAssignedToMe && task.state !== 4;
+          });
+
+          // get only my tasks marked ready
+          $scope.myReadyTasks = _.filter(tasks, function(task){
+            return task.isOwner && task.state === 3;
+          });
+
+          // get only tasks im assigned to marked as ready
+          $scope.readyTasks = _.filter(tasks, function(task){
+            return task.isAssignedToMe && task.state === 3;
+          });
+
+          // get my tasks marked as complete
+          $scope.myCompletedTasks = _.filter(tasks, function(task){
+            return task.isOwner && task.state === 4;
+          });
+
+          // get (not my) tasks marked as complete
+          $scope.iCompletedTasks = _.filter(tasks, function(task){
+            return !task.isOwner && task.state === 4;
           });
 
           // set our current task list if we havnt yet
@@ -136,14 +166,22 @@ angular.module('trApp')
             $scope.currentTaskList = $scope.createdTasks;
           } else {
             // update the current task list
-            // need a more elegant way to do this:
-            // like an object map or something
+            // TODO: need a more elegant way to do this:
+              // like an object map or something
             if ($scope.currentTaskListName === 'created'){
               $scope.currentTaskList = $scope.createdTasks;
             } else if ($scope.currentTaskListName === 'applied'){
               $scope.currentTaskList = $scope.appliedTasks;
             } else if ($scope.currentTaskListName === 'assigned'){
               $scope.currentTaskList = $scope.assignedTasks;
+            } else if ($scope.currentTaskListName === 'myReady'){
+              $scope.currentTaskList = $scope.myReadyTasks;
+            } else if ($scope.currentTaskListName === 'ready'){
+              $scope.currentTaskList = $scope.readyTasks;
+            } else if ($scope.currentTaskListName === 'myCompleted'){
+              $scope.currentTaskList = $scope.myCompletedTasks;
+            } else if ($scope.currentTaskListName === 'iCompleted'){
+              $scope.currentTaskList = $scope.iCompletedTasks;
             } else {
               console.error('No task to apply');
             }
