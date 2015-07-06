@@ -20,7 +20,17 @@
         })
         .when('/tasks', {
             templateUrl: 'app/components/myTasks/tasks.html',
-            controller: 'TasksController'
+            controller: 'TasksController',
+            hotkeys: [
+                ['1', 'Switch to Applied Tasks', 'setTaskList(\'applied\')'],
+                ['2', 'Switch to Assigned Tasks', 'setTaskList(\'assigned\')'],
+                ['3', 'Switch to Created Tasks', 'setTaskList(\'created\')']
+                // When these items become available uncomment them
+                // ['1', 'Switch to Confirmed Tasks', 'setTaskList(\'confirmed\')'],
+                // ['1', 'Switch to Completed Tasks', 'setTaskList(\'completed\')'],
+                // ['n', 'Make a New Task', '(make task view here)'],
+                // ['f', 'Find a Task', '(make task view here)']
+            ]
         })
         .when('/task/:id', {
             templateUrl: 'app/components/taskDetails/task-view.html',

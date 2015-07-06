@@ -1,6 +1,6 @@
 (function(){
 
-angular.module('trApp', ['ngRoute'])
+angular.module('trApp', ['ngRoute', 'cfp.hotkeys'])
   .run(function ($rootScope, $location, AuthService) {
     $rootScope.$on('$routeChangeStart', function (evt, next, current) {
 
