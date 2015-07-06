@@ -28,7 +28,7 @@ var TaskSchema = new mongoose.Schema({
   // 0 - dispute (by task owner)
   // 1 - open (set at creation)
   // 2 - pending (set at assignment)
-  // 3 - task complete  (set by task doer)
+  // 3 - task ready (completed)  (set by task doer)
   // 4 - completion confirmed (by task owner)
   state: {
     type: Number,
