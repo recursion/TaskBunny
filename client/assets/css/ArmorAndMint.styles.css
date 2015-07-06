@@ -37,3 +37,6 @@ aside.filters>a {
 .card > ul {
   padding: 10px;
 }
+.filters > a {
+  cursor: pointer;
+}
